@@ -13,183 +13,195 @@ import XCTest
 
 
 class SortingTest: XCTestCase {
-    
-    let numberList : Array<Int> = [8, 2, 10, 9, 7, 5]
 
     
-    //MARK: - Binary Search Algorithm
+    /*
+    
+    TODO:
+    Only have 3 collection examples. Text, numbers and an empty set. He's also missed consistently using the same method calls 
+    for each sorting example. Each of these should be reviewed carefully. Consider refactoring the isSorted method to something more
+    readable.
+    
+    */
+    
+    private var numberList: Array<Int>!
+    private var triviaNumberList: Array<Int>!
+    private var emptyNumberList: Array<Int>!
+    private var textList: Array<String>!
+    private var triviaTextList: Array<String>!
+    private var emptyTextList: Array<String>!
+    private var sortTest: Sorting!
+
+    
+    override func setUp() {
+        super.setUp()
+        
+        numberList = [8, 2, 10, 9, 7, 5]
+        triviaNumberList = [1] // Should have just one element
+        emptyNumberList = []
+        textList = ["Dog", "Cat", "Dinasour", "Lion", "Cheetah", "Gazelle", "Elephant", "Aardvark"]
+        triviaTextList = ["Dog"]
+        emptyTextList = []
+        sortTest = Sorting()
+    }
+    
+    
+    
+    //MARK: - Binary Search Algorithms
     
 
-    //test the binary search
     func testBinarySearch() {
         
-        let sortTest: Sorting = Sorting()
         var searchList: Array<Int> = Array<Int>()
-        XCTAssertNotNil(sortTest, "sorting instance not created..")
+        let key: Int = 235
+
         
-        
-        //populate the list with values
-        for number in 1...500 {
+        //populate collection..
+        for number in 0...500 {
             searchList.append(number)
         }
         
-        
-        //set the key and range (tuple)
-        sortTest.binarySearch(searchList, key: 182, range: (1, 500))
-        
-        //check the indicator
-        let isFound: Bool = sortTest.isKeyFound
-
-        XCTAssertTrue(isFound, "binary search key not found..")
+        //perform theoretical search
+        XCTAssertTrue(sortTest.binarySearch(searchList, key: key), "binary key value \(key) not found..")
         
     }
-		
+
+    
+    func testBinaryTestNotFound() {
+        
+        let searchList: Array<Int> = [0,4,7,9,13,16,34]
+        let key: Int = 8
+        
+        
+        //test for false positive
+        XCTAssertFalse(sortTest.binarySearch(searchList, key: key), "binary key value \(key) found..")
+        
+    }
+    
+    
+    
 	
-    //MARK: Sorting Algorithms
-	
-	
+    //MARK: General Sorting Algorithms
+    
     func testInsertionSort() {
-			
-        let sortTest: Sorting = Sorting()
-        XCTAssertNotNil(sortTest, "sorting instance not created..")
         
+        let resultList: Array<Int> = sortTest.insertionSort(numberList)
+        let triviaResultList: Array<Int> = sortTest.insertionSort(triviaNumberList)
+        let emptyResultList: Array<Int> = sortTest.insertionSort(emptyNumberList)
+        let sequence = sortTest.insertionSortG(textList)
+        let triviaSequence = sortTest.insertionSortG(triviaTextList)
+        let emptySequence = sortTest.insertionSortG(emptyTextList)
         
-        //pass the list to be sorted
-        var resultList: Array<Int>! = sortTest.insertionSort(numberList)
+        //evaluate results
+        XCTAssertTrue(self.IsSorted(resultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptyResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(sequence), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaSequence), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptySequence), "item sequence not in sorted order..")
         
-        
-        //determine if the numbers are sorted
-        var x: Int = 0
-        for (x = 0; x < resultList.count; x++) {
-            
-            if ((x > 0) && (resultList[x] < resultList[x - 1])) {
-                XCTFail("numberlist items not in sorted order..")
-            }
-            else {
-                print("item \(resultList[x]) is sorted..")
-            }
-            
-            
-        } //end for
-        
-        
-    } //end function
+    }
     
     
     
     func testBubbleSort() {
         
+        let resultsList: Array<Int> = sortTest.bubbleSort(numberList)
+        let triviaResultList: Array<Int> = sortTest.insertionSort(triviaNumberList)
+        let emptyResultList: Array<Int> = sortTest.insertionSort(emptyNumberList)
+        let sequence = sortTest.bubbleSortG(textList)
+        let triviaSequence = sortTest.insertionSortG(triviaTextList)
+        let emptySequence = sortTest.insertionSortG(emptyTextList)
         
-        let sortTest: Sorting = Sorting()
-        XCTAssertNotNil(sortTest, "sorting instance not created..")
-        
-        
-        //pass the list to be sorted
-        var resultList: Array<Int>! = sortTest.bubbleSort(numberList)
-        
-        
-        //determine if the numbers are sorted
-        var x: Int = 0
-        for (x = 0; x < resultList.count; x++) {
-            
-            if ((x > 0) && (resultList[x] < resultList[x - 1])) {
-                XCTFail("numberlist items not in sorted order..")
-            }
-            else {
-                print("item \(resultList[x]) is sorted..")
-            }
-            
-            
-        } //end for
-        
-        
-    } //end function
+        //evaluate results
+        XCTAssertTrue(self.IsSorted(resultsList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptyResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(sequence), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaSequence), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptySequence), "item sequence not in sorted order..")
+    }
 
     
     
     func testSelectionSort() {
         
+        let resultList: Array<Int> = sortTest.selectionSort(numberList)
+        let triviaResultList: Array<Int> = sortTest.insertionSort(triviaNumberList)
+        let emptyResultList: Array<Int> = sortTest.insertionSort(emptyNumberList)
+        let sequence = sortTest.insertionSortG(textList)
+        let triviaSequence = sortTest.insertionSortG(triviaTextList)
+        let emptySequence = sortTest.insertionSortG(emptyTextList)
+      
         
-        let sortTest: Sorting = Sorting()
-        XCTAssertNotNil(sortTest, "sorting instance not created..")
-        
-        
-        //pass the list to be sorted
-        var resultList: Array<Int>! = sortTest.selectionSort(numberList)
-        
-        
-        //determine if the numbers are sorted
-        var x: Int = 0
-        for (x = 0; x < resultList.count; x++) {
-            
-            if ((x > 0) && (resultList[x] < resultList[x - 1])) {
-                XCTFail("numberlist items not in sorted order..")
-            }
-            else {
-                print("item \(resultList[x]) is sorted..")
-            }
-            
-            
-        } //end for
-        
-        
-    } //end function
-    
-    
-    
-    func testQuickSort() {
-        
-        
-        let sortTest: Sorting = Sorting()
-        XCTAssertNotNil(sortTest, "sorting instance not created..")
-        
-        var resultList: Array<Int>! = sortTest.quickSort(numberList)
-        
-        var x: Int = 0
-        for (x = 0; x < resultList.count; x++) {
-            
-            if ((x > 0) && (resultList[x] < resultList[x - 1])) {
-                XCTFail("numberlist items not in sorted order..")
-            }
-            else {
-                print("item \(resultList[x]) is sorted..")
-            }
-            
-            
-        }
+        //evaulate results
+        XCTAssertTrue(self.IsSorted(resultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptyResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(sequence), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaSequence), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptySequence), "item sequence not in sorted order..")
         
     }
+    
+    
+    //MARK: - Other sorting algorithms - to be refactored
+    
+    
+    /*
+    func testQuickSort() {
+        
+        let resultList: Array<Int> = sortTest.quickSort(numberList)
+        let triviaResultList: Array<Int> = sortTest.insertionSort(triviaNumberList)
+        let emptyResultList: Array<Int> = sortTest.insertionSort(emptyNumberList)
+        
+        //evaluate results
+        XCTAssertTrue(self.IsSorted(resultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptyResultList), "item sequence not in sorted order..")
+        
+    }
+    
+    
     
     func testMergeSort() {
         
-        10.times { i in
-           // echo "(i) times"
-            print("\(i) times")
-        }
+        let resultList: Array<Int> = sortTest.mergeSort(numberList)
+        let triviaResultList: Array<Int> = sortTest.insertionSort(triviaNumberList)
+        let emptyResultList: Array<Int> = sortTest.insertionSort(emptyNumberList)
         
-
+        //evaluate results
+        XCTAssertTrue(self.IsSorted(resultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(triviaResultList), "item sequence not in sorted order..")
+        XCTAssertTrue(self.IsSorted(emptyResultList), "item sequence not in sorted order..")
         
-        let sortTest: Sorting = Sorting()
-        XCTAssertNotNil(sortTest, "sorting instance not created..")
+    }
+    
+ */
+    
+    
+    
+    //MARK: Helper Function
+    
+    
+    //generic method to determine sorted order
+    func IsSorted<T: Comparable>(sequence: [T]) -> Bool {
         
-        var resultList: Array<Int>! = sortTest.mergeSort(numberList)
+        guard sequence.count > 1 else { return true } // immediately return true for trivial cases
         
-        var x: Int = 0
-        for (x = 0; x < resultList.count; x++) {
+        // after the guard check we are guaranteed that sequence has at least two elements
+        
+        let rangeFromSecondElement = sequence.startIndex.successor()..<sequence.endIndex
+        
+        return !rangeFromSecondElement.contains { index in
             
-            if ((x > 0) && (resultList[x] < resultList[x - 1])) {
-                XCTFail("numberlist items not in sorted order..")
-            }
-            else {
-                print("item \(resultList[x]) is sorted..")
-            }
-            
+            sequence[index.predecessor()] > sequence[index]
             
         }
         
     }
     
-
     
+
     
 }

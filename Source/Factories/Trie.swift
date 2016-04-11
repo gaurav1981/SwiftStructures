@@ -23,13 +23,13 @@ public class Trie {
     func findWord(keyword: String) -> Array<String>! {
         
         
-        if (keyword.length == 0){
+        guard keyword.length > 0 else {
             return nil
         }
         
         
         var current: TrieNode = root
-        var wordList: Array<String>! = Array<String>()
+        var wordList: Array<String> = Array<String>()
         
         while (keyword.length != current.level) {
             
@@ -91,10 +91,11 @@ public class Trie {
     func addWord(keyword: String) {
         
         
-        if keyword.length == 0 {
-           return
+        guard keyword.length > 0 else {
+            return
         }
 
+        
         var current: TrieNode = root
         
         while(keyword.length != current.level) {
@@ -103,7 +104,7 @@ public class Trie {
             let searchKey: String = keyword.substringToIndex(current.level + 1)
             
             
-            //println("current has \(current.children.count) children..")
+            //print("current has \(current.children.count) children..")
             
             
             //iterate through the node children
