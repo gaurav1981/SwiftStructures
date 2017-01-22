@@ -8,13 +8,17 @@
 
 import XCTest
 
+/*
+ note: fibonacci algorithms are associated directly with the Int.swift
+ class an an extension.
+*/
+
+
 @testable import SwiftStructures
 
 
-private var math: Math = Math()
-
-
 class MathTest: XCTestCase {
+    
 
     override func setUp() {
         super.setUp()
@@ -25,7 +29,7 @@ class MathTest: XCTestCase {
     func testFibonnaci() {
         
         let positions: Int = 4
-        let results: Array<Int>! = math.fibNormal(positions)
+        let results = positions.fibNormal()
         
         //test results
         buildResultsTest(results)
@@ -37,11 +41,12 @@ class MathTest: XCTestCase {
     //recursive option
     func testFibRecursive() {
         
-        let positions: Int = 9
+        var positions: Int = 4
+        let results = positions.fibRecursive()
         
-        //set the number of iterations
-        math.fibRecursive(positions, sequence: [0, 1])
         
+        //test results
+        buildResultsTest(results)
         
     }
     
@@ -49,35 +54,40 @@ class MathTest: XCTestCase {
     
     //closure option
     func testFibClosure() {
-        
-        let positions: Int = 23
 
         
-        let results: Array<Int>! = math.fib(positions) { (sequence: Array<Int>!) -> Int in
+        let positions: Int = 23
+        
+        let results = positions.fibClosure { (sequence: Array<Int>!) -> Int in
             
             //initialize and set formula
             let i: Int = sequence.count
             let total: Int = sequence[i - 1] + sequence[i - 2]
             
             return total
+            
         }
         
-
         //test results
         buildResultsTest(results)
         
     }
     
-
+    
+    
+    //MARK: Helper Function
+    
     
     
     //helper function - test results validity
-    func buildResultsTest(r: Array<Int>!) {
+    func buildResultsTest(_ r: Array<Int>!) {
 
         
         if r == nil {
             XCTFail("fibonnaci test failed..")
         }
+        
+        //TODO: Adjust this so that it iterates through the entire sequence??
         
         if r[r.endIndex - 1] != r[r.endIndex - 2] + r[r.endIndex - 3] {
             XCTFail("fibonnaci test failed..")

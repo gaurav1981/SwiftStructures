@@ -10,54 +10,75 @@ import XCTest
 
 
 @testable import SwiftStructures
+
+
+/*
+ notes: this test class adopts the Sortable protocol. as a result,
+ the isSorted function originates from the protocol extension.
+ */
+
     
-    
-    class enumsTest: XCTestCase {
+    class enumsTest: XCTestCase, Sortable {
+ 
         
-        
-        let enumModel: EnumModel = EnumModel()
+        let list = Algorithm.Elements([8, 2, 10, 9, 7, 5])
         
         
         override func setUp() {
             super.setUp()
         }
+
         
-    
-        //build and evaluate algorithm model
-        func testInsertionSort() {
+        //model for insertion sort algorithm
+        func testInsertModel() {
             
+            let model = Algorithm.InsertionSort(list)
+            self.buildEnumModel(withModel: model)
+
+        }
+        
+        
+        //model for insertion sort (with text)
+        func testInsertTextModel() {
             
-            //build model
-            let numberList = Algorithm.Sequence([8, 2, 10, 9, 7, 5])
-            let model = Algorithm.InsertionSort(numberList)
+            let textList = Algorithm.Elements(["Dog", "Cat", "Dinasour", "Lion", "Cheetah", "Elephant", "Aardvark"])
             
-            
-            //evaluate results
-            let results = enumModel.evaluate(model)
-            
-            XCTAssertTrue(self.IsSorted(results))
-            
+            let model = Algorithm.InsertionSort(textList)
+            self.buildEnumModel(withModel: model)
             
         }
+
+        
+        //model for bubble sort algorithm
+        func testBubbleModel() {
+            
+            let model = Algorithm.BubbleSort(list)
+            self.buildEnumModel(withModel: model)
+            
+        }
+
+        
+        //model for selection sort algorithm
+        func testSelectionModel() {
+            
+            let model = Algorithm.SelectionSort(list)
+            self.buildEnumModel(withModel: model)
+            
+        }
+        
         
         
         //MARK: Helper Function
         
         
-        func IsSorted<T: Comparable>(sequence: [T]) -> Bool {
+        //helper function - test enum model
+        func buildEnumModel<T: Comparable>(withModel model: Algorithm<T>) {
             
-            guard sequence.count > 1 else {
-                return true
-            }
+            let enumModel = EnumModel()
+            let results = enumModel.evaluate(withModel: model)
             
             
-            //guaranteed that sequence has at least two elements
-            let rangeFromSecondElement = sequence.startIndex.successor()..<sequence.endIndex
-            
-            return !rangeFromSecondElement.contains { index in
-                sequence[index.predecessor()] > sequence[index]
-            }
-            
+            XCTAssertTrue(self.isSorted(results!), "list values incorrectly sorted..")
         }
         
         

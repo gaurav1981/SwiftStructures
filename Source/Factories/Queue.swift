@@ -9,39 +9,36 @@
 import Foundation
 
 public class Queue<T> {
+    
    
-    private var top: QNode<T>!
+    private var top: Node<T>!
     
     
     init() {
-      top = QNode<T>()
+      top = Node<T>()
     }
-    
     
     
     //the number of items
     var count: Int {
         
-        
-        if (top.key == nil) {
+        guard top.key != nil else {
             return 0
         }
-            
-        else  {
-            
-            var current: QNode<T> = top
-            var x: Int = 1
-            
-            
-            //cycle through the list of items
-            while (current.next != nil) {
-                current = current.next
-                x += 1
-            }
-            
-            return x
-            
-            }
+        
+        
+        var current: Node<T> = top
+        var x: Int = 1
+
+        
+        //cycle through items
+        while current.next != nil {
+            current = current.next
+            x += 1
+        }
+        
+        return x
+        
     }
 
 
@@ -73,28 +70,28 @@ public class Queue<T> {
 
     
     //enqueue the specified object
-    func enQueue(key: T) {
+    func enQueue(_ key: T) {
         
         
-        //check top node
-        if (top.key == nil) {
+        //trivial case
+        guard top.key != nil else {
             top.key = key
             return
         }
         
-        let childToUse: QNode<T> = QNode<T>()
-        var current: QNode<T> = top
+        let childToUse = Node<T>()
+        var current = top
     
         
         //cycle through the list
-        while (current.next != nil) {
-            current = current.next
+        while current?.next != nil {
+            current = current?.next
         }
-                
         
-        //append a new item
+        
+        //append new item
         childToUse.key = key
-        current.next = childToUse
+        current?.next = childToUse
         
     }
     
@@ -111,19 +108,19 @@ public class Queue<T> {
     
     
         //retrieve and queue the next item
-        let queueitem: T? = top.key
+        let queueItem: T? = top.key
     
     
         //use optional binding 
-        if let nextitem = top.next {
-          top = nextitem
+        if let nextItem = top.next {
+          top = nextItem
         }
         else {
-            top = QNode<T>()
+            top = Node<T>()
         }
     
     
-        return queueitem
+        return queueItem
         
     }
     

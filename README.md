@@ -7,7 +7,7 @@ This project provides a framework for commonly used data structures and algorith
 Audience
 ---------------------
 
-As a developer, you should already be familiar with the basics of programming. Beyond algorithms, this project also aims to provide an alternative for learning the basics of Swift. This includes implementations of many Swift-specific features such as optionals, extensions and generics. Beyond Swift, audiences should be familiar with Singleton and Factory design patterns along with sets, arrays and dictionaries. 
+As a developer, you should already be familiar with the basics of programming. Beyond algorithms, this project also aims to provide an alternative for learning the basics of Swift. This includes implementations of many Swift-specific features such as optionals, extensions, protocols and generics. Beyond Swift, audiences should be familiar with **Singleton** and **Factory** design patterns along with sets, arrays and dictionaries. 
 
 
 Features
@@ -16,17 +16,17 @@ Features
 The project features code-level examples for the following items:
 
 + [Linked Lists](/Source/Factories/LinkedList.swift)
-+ [Binary Search](/Source/Factories/Sorting.swift)
-+ [Insertion Sort](/Source/Factories/Sorting.swift)
-+ [Bubble Sort](/Source/Factories/Sorting.swift)
-+ [Selection Sort](/Source/Factories/Sorting.swift)
-+ [Quick Sort](/Source/Factories/Sorting.swift)
-+ [Merge Sort](/Source/Factories/Sorting.swift)
-+ [Fibonacci Numbers](/Source/Factories/Math.swift)
++ [Binary Search](/Source/Extensions/Array.swift)
++ [Insertion Sort](/Source/Extensions/Array.swift)
++ [Bubble Sort](/Source/Extensions/Array.swift)
++ [Selection Sort](/Source/Extensions/Array.swift)
++ [Quick Sort](/Source/Extensions/Array.swift)
++ [Protocols](/Source/Extensions/Sortable.swift)
++ [Enumerations](/Factories/enumModel.swift)
++ [Fibonacci Numbers](/Source/Extensions/Int.swift)
 + Generics
 + [Closures](/SwiftTests/ClosureTest.swift)
-+ [Hash Tables](/Source/Factories/HashTable.swift)
-+ [Bloom Filters](/Source/Factories/Bloom.swift)
++ [Hash Tables](/Source/Factories/HashList.swift)
 + [Binary Search Trees](/Source/Structures/AVLTree.swift)
 + [Tree Balancing - Rotations](/SwiftTests/AVLTest.swift)
 + [Tries](/Source/Factories/Trie.swift)
@@ -40,7 +40,7 @@ The project features code-level examples for the following items:
 
 The Book
 --------------------
-Available in print, ePub or pdf format, <a href="http://shop.waynewbishop.com" target="_blank">The Swift Algorithms Book</a> features code and color illustrations that will benefit students and professionals. As a collaborative open-source effort, I also welcome <a href="https://twitter.com/waynewbishop" target="_blank">feedback</a> and <a href="http://shop.waynewbishop.com/pages/participate" target="_blank">contribution</a> from others. 
+Available in print, ePub or pdf format, the <a href="http://shop.waynewbishop.com" target="_blank">The Swift Algorithms Book</a> features code and color illustrations that will benefit students and professionals. As a collaborative open-source effort, I also welcome <a href="https://twitter.com/waynewbishop" target="_blank">feedback</a> and contribution from others. 
 
 
 Example
@@ -49,18 +49,22 @@ Example
 ```swift
     /* graph traversal - breadth first search */
     
-    func traverse(startingv: Vertex) {
+    func traverse(_ startingv: Vertex, formula: (inout node: Vertex) -> ()) {
+
         
         //establish a new queue
         let graphQueue: Queue<Vertex> = Queue<Vertex>()
         
+        
         //queue a starting vertex
         graphQueue.enQueue(startingv)
+        
         
         while !graphQueue.isEmpty() {
             
             //traverse the next queued vertex
-            let vitem = graphQueue.deQueue() as Vertex!
+            var vitem: Vertex = graphQueue.deQueue() as Vertex!
+            
             
             //add unvisited vertices to the queue
             for e in vitem.neighbors {
@@ -69,22 +73,25 @@ Example
                     graphQueue.enQueue(e.neighbor)
                 }
             }
+                        
+            //invoke with inout parameter
+            formula(node: &vitem)
             
-            vitem.visited = true
-            print("traversed vertex: \(vitem.key!)..")
             
         } //end while
         
-        print("graph traversal complete..")
         
-    } //end function
+        print("graph traversal complete..")        
+        
+    }
+
 ```
 
 Getting Started
 --------------------
 
-Swift Structures has been optimized for Xcode 7.3 (e.g., Swift 2.2) or later. The directories are organized as follows:
-+ Source - Code for all Swift data structures and algorithms
+Swift Structures has been optimized for **Swift 3.0** (e.g., Xcode 8.0) or later. The directories are organized as follows:
++ Source - Code for all Swift data structures, algorithms and source extensions
 + Example - An empty iOS single-view application template
 + SwiftTests - Unit tests with XCTest Framework
 
@@ -96,7 +103,8 @@ Individuals are welcome to use the code with commercial and open-source projects
 Branches
 --------------------
 + master - The production branch. Clone or fork this repository for the latest copy
-+ develop - The active development branch. <a href="https://help.github.com/articles/creating-a-pull-request" target=_blank">Pull requests</a> should be directed to this branch
++ develop - The active Swift 3.0 development branch. Swift 3.0 <a href="https://help.github.com/articles/creating-a-pull-request" target=_blank">pull requests</a> should be directed to this branch
+
 
 
 Other Projects
